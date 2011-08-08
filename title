@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+if [ -z "$1" ]; then
+  echo "Usage: $0 title"
+  echo "For example: $0 DevMain"
+  echo "Use quotes if the title has spaces: $0 \"My Debug Session\""
+  echo "To remove title: $0 --clear"
+  exit 1
+fi
+
+TITLE=""
+if [ "$1" != "--clear" ]; then
+  TITLE="$1"
+fi
+
+echo -n -e "\033]0;$TITLE\007"

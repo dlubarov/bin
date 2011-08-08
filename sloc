@@ -1,0 +1,88 @@
+#!/usr/bin/env python
+
+from __future__ import with_statement
+
+import os
+import sys
+import copy
+
+EXTENSIONS = (
+  'asm', 'bas', 'bat', 'c', 'cgi', 'cpp', 'cs', 'css', 'f', 'for', 'h', 'hs', 'htm', 'html', 'java', 'js', 'pas', 'php', 'pl', 'py', 'rb', 's', 'scala', 'sh', 'zepto'
+)
+
+class LanguageStat:
+  def __init__(self, num_blank=0, num_nonblank=0):
+    self.num_blank = num_blank
+    self.num_nonblank = num_nonblank
+
+  def __add__(self, other):
+    if isinstance(other, LanguageStat):
+      return LanguageStat(self.num_blank + other.num_blank,
+                          self.num_nonblank + other.num_nonblank)
+    else:
+      return NotImplemented
+
+  def __str__(self):
+    return "{0} lines, {1} nonblank".format(
+        self.num_blank + self.num_nonblank,
+        self.num_nonblank)
+
+class Stats:
+  def __init__(self, lang_stats={}):
+    self.lang_stats = copy.copy(lang_stats)
+
+  def record(self, lang, stat):
+    if lang not in self.lang_stats:
+      self.lang_stats[lang] = LanguageStat()
+    self.lang_stats[lang] += stat
+
+  def __getitem__(self, idx):
+    return self.lang_stats[idx]
+
+  def __add__(self, other):
+    if isinstance(other, Stats):
+      union = Stats()
+      for lang in self.lang_stats:
+        union.record(lang, self.lang_stats[lang])
+      for lang in other.lang_stats:
+        union.record(lang, other.lang_stats[lang])
+      return union
+    return NotImplemented
+
+def get_file_stat(file):
+  stat = LanguageStat()
+  with open(file) as f:
+    for line in f.readlines():
+      if line.strip():
+        stat.num_nonblank += 1
+      else:
+        stat.num_blank += 1
+  return stat
+
+def get_dir_stats(dir):
+  entries = os.listdir(dir)
+  entries = [os.path.join(dir, e) for e in entries]
+  files = filter(lambda e: os.path.isfile(e), entries)
+  dirs = filter(lambda e: os.path.isdir(e), entries)
+  stats = Stats()
+  for f in files:
+    for ext in EXTENSIONS:
+      if f.endswith('.' + ext):
+        stats.record(ext, get_file_stat(f))
+  for d in dirs:
+    stats += get_dir_stats(d)
+  return stats
+
+def run():
+  if len(sys.argv) > 1:
+    dir = sys.argv[1]
+  else:
+    dir = os.getcwd()
+  print("examining source files in {0}...".format(dir))
+
+  net_stats = get_dir_stats(dir)
+  for lang in net_stats.lang_stats:
+    print("{0}: {1}".format(lang, net_stats[lang]))
+
+if __name__ == '__main__':
+  run()

@@ -1,0 +1,1 @@
+echo $CLASSPATH | python -c "print '\n'.join(raw_input().split(':'))"
