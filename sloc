@@ -7,7 +7,9 @@ import sys
 import copy
 
 EXTENSIONS = (
-  'asm', 'bas', 'bat', 'c', 'cgi', 'cpp', 'cs', 'css', 'f', 'for', 'h', 'hs', 'htm', 'html', 'java', 'js', 'pas', 'php', 'pl', 'py', 'rb', 's', 'scala', 'sh', 'zepto'
+  'asm', 'bas', 'bat', 'c', 'cgi', 'cpp', 'cs', 'css', 'f', 'for',
+  'h', 'hs', 'htm', 'html', 'java', 'js', 'pas', 'php', 'pl', 'py',
+  'rb', 's', 'scala', 'sh', 'zepto'
 )
 
 class LanguageStat:
@@ -49,6 +51,12 @@ class Stats:
       return union
     return NotImplemented
 
+  def total(self):
+    stat = LanguageStat()
+    for lang in self.lang_stats:
+      stat += self.lang_stats[lang]
+    return stat
+
 def get_file_stat(file):
   stat = LanguageStat()
   with open(file) as f:
@@ -78,11 +86,11 @@ def run():
     dir = sys.argv[1]
   else:
     dir = os.getcwd()
-  print("examining source files in {0}...".format(dir))
 
   net_stats = get_dir_stats(dir)
   for lang in net_stats.lang_stats:
     print("{0}: {1}".format(lang, net_stats[lang]))
+  print("\ntotal: {0}".format(net_stats.total()))
 
 if __name__ == '__main__':
   run()
