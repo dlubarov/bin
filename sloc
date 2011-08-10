@@ -90,7 +90,9 @@ def run():
   net_stats = get_dir_stats(dir)
   for lang in net_stats.lang_stats:
     print("{0}: {1}".format(lang, net_stats[lang]))
-  print("\ntotal: {0}".format(net_stats.total()))
+  if net_stats.lang_stats:
+    print("")
+  print("total: {0}".format(net_stats.total()))
 
 if __name__ == '__main__':
   run()
