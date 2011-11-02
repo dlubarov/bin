@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 #############################################################################
 #                                                                           #
 #   tetris.py is Copyright, Nathan Dumont 2007                              #
