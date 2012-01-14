@@ -2,5 +2,7 @@
 
 set -e
 
-sudo apt-get update
+echo "Updating..."
+sudo apt-get -qq update
+
 sudo apt-get upgrade

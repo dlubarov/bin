@@ -1,1 +1,3 @@
-echo $PATH | python -c "from sys import stdin; print('\n'.join(stdin.readline().strip().split(':')))"
+#!/usr/bin/env bash
+
+echo "$PATH" | python -c "from sys import stdin; print('\n'.join(stdin.readline().strip().split(':')))"

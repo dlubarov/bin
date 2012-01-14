@@ -1,1 +1,3 @@
-echo $CLASSPATH | python -c "print '\n'.join(raw_input().split(':'))"
+#!/usr/bin/env bash
+
+echo "$CLASSPATH" | python -c "print '\n'.join(raw_input().split(':'))"
