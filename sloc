@@ -9,7 +9,7 @@ import copy
 EXTENSIONS = (
   'asm', 'bas', 'bat', 'c', 'cgi', 'cpp', 'cs', 'css', 'f', 'for',
   'h', 'hs', 'htm', 'html', 'java', 'js', 'pas', 'php', 'pl', 'py',
-  'rb', 's', 'scala', 'sh', 'zepto'
+  'rb', 's', 'scala', 'sh', 'zepto', 'guava'
 )
 
 class LanguageStat:
