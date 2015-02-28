@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+# Replaces leading spaces with underscores, because feedback in Jobvite loses
+# leading spaces when it renders as HTML.
+#
+# Example usage:
+# $ under-indent < file.rb | pbcopy
+
+ARGF.each do |line|
+  puts line.rstrip.sub(/^(\s|\u00a0)*/) { |match| "_" * match.length }
+end
