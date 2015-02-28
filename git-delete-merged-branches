@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+# Deletes branches that have been merged.
+# Adapted from http://stackoverflow.com/a/6127884/714009
+
+git branch --merged | grep -v master | grep -v "\*" | xargs -n 1 git branch -d
