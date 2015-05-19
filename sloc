@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+# Usage: sloc [directory ...]
+
 from __future__ import with_statement
 
 import os
@@ -82,14 +84,13 @@ def get_dir_stats(dir):
   return stats
 
 def run():
-  if len(sys.argv) > 1:
-    dir = sys.argv[1]
-  else:
-    dir = os.getcwd()
+  dirs = sys.argv[1:] or [os.getcwd()]
 
-  net_stats = get_dir_stats(dir)
+  net_stats = Stats()
+  for dir in dirs:
+    net_stats = net_stats + get_dir_stats(dir)
   if not net_stats.lang_stats:
-    print("No code found in this directory.")
+    print("No code found.")
   for lang in net_stats.lang_stats:
     print("{0}: {1}".format(lang, net_stats[lang]))
   if len(net_stats.lang_stats) > 1:
