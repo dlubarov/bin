@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+
+# Prints possible moves in a round of Alphabear.
+
+import sys
+from collections import Counter
+
+DICTIONARY_PATH = '/Users/dlubarov/Documents/sowpods.txt'
+
+try:
+    with open(DICTIONARY_PATH) as f:
+        dictionary = [word.strip() for word in f.readlines()]
+except FileNotFoundError:
+    print('Didn\'t find Europe Scrabble Word List file. Expected it at ' + DICTIONARY_PATH)
+
+def usage():
+    print('Usage: {0} <available letters> [<urgent letters>]'.format(sys.argv[0]))
+
+def is_subset(a, b):
+    return len(Counter(a) - Counter(b)) == 0
+
+if __name__ == '__main__':
+    if len(sys.argv) not in [2, 3]:
+        usage()
+    available_letters = Counter(sys.argv[1].lower())
+    urgent_letters = Counter(sys.argv[2] if len(sys.argv) == 3 else '')
+
+    possible_words = dictionary
+    possible_words = filter(lambda word: len(Counter(word) - available_letters) == 0, possible_words)
+    possible_words = filter(lambda word: len(urgent_letters - Counter(word)) == 0, possible_words)
+    possible_words = sorted(possible_words, key=len)
+    print('\n'.join(possible_words))
