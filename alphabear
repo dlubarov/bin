@@ -25,8 +25,6 @@ if __name__ == '__main__':
     available_letters = Counter(sys.argv[1].lower())
     urgent_letters = Counter(sys.argv[2] if len(sys.argv) == 3 else '')
 
-    possible_words = dictionary
-    possible_words = filter(lambda word: len(Counter(word) - available_letters) == 0, possible_words)
-    possible_words = filter(lambda word: len(urgent_letters - Counter(word)) == 0, possible_words)
+    possible_words = filter(lambda word: not (Counter(word) - available_letters or urgent_letters - Counter(word)), dictionary)
     possible_words = sorted(possible_words, key=len)
     print('\n'.join(possible_words))
