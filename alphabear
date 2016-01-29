@@ -19,12 +19,16 @@ def usage():
 def is_subset(a, b):
     return len(Counter(a) - Counter(b)) == 0
 
+def is_option(word, available_letters, urgent_letters):
+    word = Counter(word)
+    return not (word - available_letters or urgent_letters - word)
+
 if __name__ == '__main__':
     if len(sys.argv) not in [2, 3]:
         usage()
     available_letters = Counter(sys.argv[1].lower())
     urgent_letters = Counter(sys.argv[2] if len(sys.argv) == 3 else '')
 
-    possible_words = filter(lambda word: not (Counter(word) - available_letters or urgent_letters - Counter(word)), dictionary)
+    possible_words = filter(lambda word: is_option(word, available_letters, urgent_letters), dictionary)
     possible_words = sorted(possible_words, key=len)
     print('\n'.join(possible_words))
